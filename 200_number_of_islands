@@ -1,0 +1,84 @@
+// Given a 2d grid map of '1's (land) and '0's (water), count the number of islands. 
+// An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. 
+// You may assume all four edges of the grid are all surrounded by water.
+
+// Example 1:
+
+// Input:
+// 11110
+// 11010
+// 11000
+// 00000
+
+// Output: 1
+// Example 2:
+
+// Input:
+// 11000
+// 11000
+// 00100
+// 00011
+
+// Output: 3
+
+var numIslands = grid => {
+  if (!grid || grid.length === 0) {
+    return 0;
+  }
+
+  let islandCount = 0;
+
+  for (let y = 0; y < grid.length; y++) {
+    for (let x = 0; x < grid[y].length; x++) {
+      if (grid[y][x] === '1') {
+        grid[y][x] = '-1';
+        islandCount++;
+
+        const queue = [[y, x]];
+
+        while (queue.length) {
+          let pos = queue.shift();
+
+          // top
+          if (pos[0] > 0) {
+            if (grid[pos[0] - 1][pos[1]] === '1') {
+              grid[pos[0] - 1][pos[1]] = '-1';
+              queue.push([pos[0] - 1, pos[1]]);
+            }
+          }
+
+          // right
+          if (pos[1] < grid[0].length - 1) {
+            if (grid[pos[0]][pos[1] + 1] === '1') {
+              grid[pos[0]][pos[1] + 1] = '-1';
+              queue.push([pos[0], pos[1] + 1]);
+            }
+          }
+
+          // bottom
+          if (pos[0] < grid.length - 1) {
+            if (grid[pos[0] + 1][pos[1]] === '1') {
+              grid[pos[0] + 1][pos[1]] = '-1';
+              queue.push([pos[0] + 1, pos[1]]);
+            }
+          }
+
+          // left
+          if (pos[1] > 0) {
+            if (grid[pos[0]][pos[1] - 1] === '1') {
+              grid[pos[0]][pos[1] - 1] = '-1';
+              queue.push([pos[0], pos[1] - 1]);
+            }
+          }
+        }
+      }
+    }
+  }
+  return islandCount;
+};
+
+let y = [['1','1','1','1','0'], ['1','1','0','1','0'], ['1','1','0','0','0'], ['0','0','0','0','0']];
+let z = [['1','1','0','0','0'], ['1','1','0','0','0'], ['0','0','1','0','0'], ['0','0','0','1','1']];
+
+numIslands(y);
+numIslands(z);
